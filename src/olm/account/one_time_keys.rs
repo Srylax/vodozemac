@@ -53,8 +53,12 @@ impl OneTimeKeys {
         }
     }
 
-    pub fn mark_as_published(&mut self) {
+    pub fn mark_all_as_published(&mut self) {
         self.unpublished_public_keys.clear();
+    }
+
+    pub fn mark_as_published(&mut self, key_id: &KeyId) -> Option<Curve25519PublicKey> {
+        self.unpublished_public_keys.remove(key_id)
     }
 
     pub fn get_secret_key(&self, public_key: &Curve25519PublicKey) -> Option<&Curve25519SecretKey> {
@@ -202,7 +206,7 @@ mod test {
             .keys()
             .for_each(|key_id| assert!(!store.is_secret_key_published(key_id)));
 
-        store.mark_as_published();
+        store.mark_all_as_published();
         assert!(store.unpublished_public_keys.is_empty());
         assert_eq!(store.private_keys.len(), OneTimeKeys::MAX_ONE_TIME_KEYS);
         assert_eq!(store.key_ids_by_key.len(), OneTimeKeys::MAX_ONE_TIME_KEYS);

@@ -361,8 +361,13 @@ impl Account {
 
     /// Mark all currently unpublished one-time and fallback keys as published.
     pub fn mark_keys_as_published(&mut self) {
-        self.one_time_keys.mark_as_published();
+        self.one_time_keys.mark_all_as_published();
         self.fallback_keys.mark_as_published();
+    }
+
+    /// Mark a single currently unpublished one-time key as published.
+    pub fn mark_key_as_published(&mut self, key_id: &KeyId) -> Option<Curve25519PublicKey> {
+        self.one_time_keys.mark_as_published(key_id)
     }
 
     /// Convert the account into a struct which implements [`serde::Serialize`]
