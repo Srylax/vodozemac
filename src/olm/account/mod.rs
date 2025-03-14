@@ -139,6 +139,11 @@ impl Account {
         self.signing_key.public_key()
     }
 
+    /// Get a copy of the account's public Ed25519 keypair
+    pub fn ed25519_keypair(&self) -> Ed25519Keypair {
+        self.signing_key.clone()
+    }
+
     /// Get a copy of the account's public Curve25519 key
     pub const fn curve25519_key(&self) -> Curve25519PublicKey {
         self.diffie_hellman_key.public_key()
